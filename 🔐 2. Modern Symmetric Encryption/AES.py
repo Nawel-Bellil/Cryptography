@@ -384,3 +384,6 @@ if __name__ == '__main__':
                                       Mode[mode], iv, rounds)
             with open(output_file, 'wb') as f:
                 f.write(output_data)
+
+
+# repo : https://github.com/rafael2903/AES-128-cipher/blob/main/AES.py

@@ -1,0 +1,13 @@
+
+Avant qu'AES (Rijndael) soit sélectionné, il y avait 5 finalistes. Tous ces algorithmes sont des chiffrements symétriques modernes.
+
+Les finalistes sont :
+
+
+| Algorithme   | Auteurs                             | Remarques                     |
+| ------------ | ----------------------------------- | ----------------------------- |
+| **Rijndael** | Daemen & Rijmen (choisi comme AES)  | 🏆                            |
+| **Twofish**  | Bruce Schneier et al.               | Ancien créateur de Blowfish   |
+| **Serpent**  | Ross Anderson et al.                | Très sécurisé, mais plus lent |
+| **RC6**      | RSA Laboratories (extension de RC5) | Breveté                       |
+| **MARS**     | IBM                                 | Structure compliquée          |

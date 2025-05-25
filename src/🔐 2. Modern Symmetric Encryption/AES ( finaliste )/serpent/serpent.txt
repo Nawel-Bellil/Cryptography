@@ -1,0 +1,3 @@
+Serpent is a 128-bit block cipher designed by Ross Anderson, Eli Biham and Lars Knudsen as a proposal for the Advanced Encryption Standard (1998).
+
+This implementation takes as a reference the original C and Python code written by Frank Stajano based on the submission paper and combines it with an optimized version of the S-boxes developed by Dag Arne Osvik.

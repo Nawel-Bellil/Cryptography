@@ -10,6 +10,7 @@ un algorithme de cryptographie asymétrique
 # Importing required libraries used 
 # to perform arithmetic operations 
 # on elliptic curves
+import tinyec
 from tinyec import registry
 import secrets
 

@@ -68,7 +68,7 @@ def decrypt(en_msg, p, key, q):
 # Driver code
 def main():
 
-    msg = 'encryption'
+    msg = 'email me at gmail.com'
     print("Original Message :", msg)
 
     q = random.randint(pow(10, 20), pow(10, 50))

@@ -51,51 +51,61 @@ def schnorr_verify(msg: str, e: int, s: int, y: int, p: int, q: int, g: int) -> 
         print(f"❗ Verification failed: {ex}")
         return False
 
-# === Step-by-step interactive demo ===
+# === Generator finder ===
+def find_generator(p, q):
+    """Find a generator of order q modulo p"""
+    for g in range(2, p):
+        if pow(g, q, p) == 1:
+            # Ensure it's of exact order q
+            if all(pow(g, q // d, p) != 1 for d in range(2, q) if q % d == 0):
+                return g
+    raise Exception("No valid generator g found")
+
+# === Main interactive demo ===
 def main():
-    print("🔐 Schnorr Signature Demo (Manual Inputs)")
-    
-    print("\n📌 STEP 1: System Parameters (p, q, g)")
-    p = int(input("Enter a large prime p (e.g., 607): "))
-    q = int(input("Enter a prime q such that q | (p - 1) (e.g., 101): "))
+    print("🔐 Schnorr Signature Demo (Manual Inputs)\n")
+
+    # STEP 1
+    print("📌 STEP 1: System Parameters (p, q, g)")
+    default_p, default_q = 607, 101
+    p_input = input(f"Enter a large prime p (default {default_p}): ")
+    q_input = input(f"Enter a prime q such that q | (p - 1) (default {default_q}): ")
+
+    p = int(p_input) if p_input.strip() else default_p
+    q = int(q_input) if q_input.strip() else default_q
 
     if (p - 1) % q != 0:
         print("❌ Error: q does not divide (p - 1). Exiting.")
         return
 
-    g = int(input("Enter generator g of order q mod p (e.g., 3): "))
-    if pow(g, q, p) != 1:
-        print("❌ Error: g^q mod p ≠ 1. Invalid generator. Exiting.")
+    print("🔍 Finding generator g of order q mod p...")
+    try:
+        g = find_generator(p, q)
+        print(f"✅ Found valid generator: g = {g}")
+    except Exception as e:
+        print(f"❌ Error: {e}")
         return
 
+    # STEP 2
     print("\n🔑 STEP 2: Key Generation")
-    x = int(input("Enter private key x ∈ [1, q-1]: "))
+    x_input = input(f"Enter private key x ∈ [1, {q-1}] (default 5): ")
+    x = int(x_input) if x_input.strip() else 5
     y = schnorr_keygen(p, q, g, x)
     print("✅ Public key y = g^x mod p =", y)
 
+    # STEP 3
     print("\n📝 STEP 3: Signing")
-    msg = input("Enter the message to sign: ")
-    k = int(input("Choose random nonce k ∈ [1, q-1]: "))
+    msg = input("Enter the message to sign: ").strip() or "hello schnorr"
+    k_input = input(f"Choose random nonce k ∈ [1, {q-1}] (default 13): ")
+    k = int(k_input) if k_input.strip() else 13
     e, s = schnorr_sign(msg, x, p, q, g, k)
     print(f"\n🖊️ Signature generated:\ne = {e}\ns = {s}")
 
+    # STEP 4
     print("\n🔎 STEP 4: Verification")
     print(f"Verifying signature for message: '{msg}'")
     valid = schnorr_verify(msg, e, s, y, p, q, g)
     print("✅ Signature VALID" if valid else "❌ Signature INVALID")
-def find_generator(p, q):
-    for g in range(2, p):
-        if pow(g, q, p) == 1:
-            # Vérifions que g n’est pas d’un ordre plus petit que q
-            is_valid = all(pow(g, q // d, p) != 1 for d in range(2, q) if q % d == 0)
-            if is_valid:
-                return g
-    raise Exception("No valid generator found")
-
-p = 607
-q = 101
-g = find_generator(p, q)
-print(f"✅ Valid generator of order {q} mod {p} is: g = {g}")
 
 if __name__ == "__main__":
     main()
